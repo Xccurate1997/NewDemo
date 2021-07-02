@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="dynamicPropertyManager"
+          class="com.autonavi.socolframework.dynamicproperty.diamond.DiamondDynamicPropertyManager"></bean>
+
+    <bean id="diamondPropertySourcesPlaceholderConfigurer"
+          class="com.autonavi.socolframework.dynamicproperty.diamond.DiamondPropertySourcesPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="nullValue" value="NULL"></property>
+        <property name="localOverride" value="false"></property>
+        <property name="diamondLocations">
+            <list>
+                <value>diamond:autonavi_socol_trk/jdbc.properties</value>
+                <value>diamond:autonavi_socol_trk/redis.properties</value>
+                <value>diamond:autonavi_socol_trk/oss.properties</value>
+                <value>diamond:autonavi_socol_trk/weather.properties</value>
+                <value>diamond:autonavi_socol_trk/tbschedule.properties</value>
+                <value>diamond:autonavi_socol_trk/link-match-service.properties</value>
+                <value>diamond:autonavi_socol_trk/logback.properties</value>
+                <value>diamond:autonavi_socol_trk/http-client.properties</value>
+                <value>diamond:autonavi_socol_trk/other.properties</value>
+                <value>diamond:autonavi_socol_global/gray-router.properties</value>
+                <value>diamond:autonavi_socol_global/logfilter.properties</value>
+                <value>diamond:autonavi_socol_global/cardcoop.properties</value>
+                <value>diamond:autonavi_socol_global/hsfconsumer.properties</value>
+                <value>diamond:autonavi_socol_global/odps.properties</value>
+                <value>diamond:autonavi_socol_trk/hbiz.properties</value>
+                <value>diamond:autonavi_socol_trk/workflow.properties</value>
+                <value>diamond:autonavi_socol_trk/task-check.properties</value>
+                <value>diamond:autonavi_socol_trk/prediction.properties</value>
+                <value>diamond:autonavi_socol_global/autolite.properties</value>
+                <value>diamond:autonavi_socol_global/common.properties</value>
+                <value>diamond:autonavi_socol_trk/trkProxy.properties</value>
+                <value>diamond:autonavi_socol_trk/hotspot.properties</value>
+                <value>diamond:autonavi_socol_trk/task-match.properties</value>
+                <value>diamond:autonavi_socol_trk/perrecognition.properties</value>
+                <value>diamond:autonavi_socol_trk/collect_platfrom.properties</value>
+                <value>diamond:autonavi_socol_trk/es.properties</value>
+                <!--提供给测试同学 QA同学的配置项（汇总在qa-config文件中，方便一起修改、审批）-->
+                <value>diamond:autonavi_socol_trk/qa-config.properties</value>
+            </list>
+        </property>
+        <property name="dynamicPropertyManager" ref="dynamicPropertyManager"></property>
+    </bean>
+
+    <bean id="valueConverter" class="com.autonavi.socolframework.dynamicproperty.support.SpringElValueConverter"/>
+
+    <bean class="com.autonavi.socolframework.dynamicproperty.spring.DynamicValuePostProcessor"
+          p:dynamicPropertyManager-ref="dynamicPropertyManager" p:valueConverter-ref="valueConverter"/>
+
+    <bean id="globalVars" class="com.autonavi.socolframework.dynamicproperty.spring.GlobalVars"
+          p:dynamicPropertyManager-ref="dynamicPropertyManager"/>
+</beans>
